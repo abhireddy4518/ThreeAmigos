@@ -1,3 +1,6 @@
+# Productoin link:
+https://threeamigoservice-ffbpcad6hng9dbgt.canadacentral-01.azurewebsites.net/?searchTerm=
+
 # ThreeAmigos
 
 1.	Go the appsettings.json file and change the connectionstring to //For connect local db Change the connectionString
