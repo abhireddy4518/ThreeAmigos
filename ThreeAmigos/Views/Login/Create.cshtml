@@ -1,0 +1,148 @@
+﻿@model ThreeAmigos.Models.ViewModels.LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Sign Up</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS (optional for additional icons) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">Sign Up</div>
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @ViewBag.ErrorMessage
+                            </div>
+                        }
+                        <form asp-controller="LogIn" asp-action="Create" method="post" id="signUpForm">
+                            <div class="form-group">
+                                <label asp-for="Role" class="control-label">Role</label>
+                                <select asp-for="Role" class="form-control">
+                                    <option value="customer">Customer</option>
+                                    <option value="staff">Staff</option>
+                                </select>
+                                <span asp-validation-for="Role" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" id="username" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PhoneNumber" class="control-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" id="PhoneNumber" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PermenentAddress" class="control-label"></label>
+                                <input asp-for="PermenentAddress" class="form-control" id="PermenentAddress" />
+                                <span asp-validation-for="PermenentAddress" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="DeliveryAddress" class="control-label"></label>
+                                <input asp-for="DeliveryAddress" class="form-control" id="DeliveryAddress" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label"></label>
+                                <input asp-for="Email" class="form-control" id="email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Password" class="control-label"></label>
+                                <input asp-for="Password" class="form-control" id="password" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                           
+                            <button type="submit" class="btn btn-primary mt-3">Sign Up</button>
+                        </form>
+                    </div>
+                    <div class="card-footer">
+                        <p class="text-center">Already have an account? <a href="@Url.Action("Login", "LogIn")">Log In</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (optional for advanced functionality) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom JS for validation -->
+    <script>
+        $(document).ready(function () {
+            $("#signUpForm").on("submit", function (event) {
+                var isValid = true;
+
+                // Clear previous error messages
+                $(".text-danger").text("");
+
+                // Validate Name
+                var username = $("#username").val().trim();
+                if (username === "") {
+                    $("#username").next(".text-danger").text("Name is required.");
+                    isValid = false;
+                } else if (username.length < 3) {
+                    $("#username").next(".text-danger").text("Name must be at least 3 characters long.");
+                    isValid = false;
+                }
+
+                // Validate DeliveryAddress
+                var DeliveryAddress = $("#DeliveryAddress").val().trim();
+                if (DeliveryAddress === "") {
+                    $("#DeliveryAddress").next(".text-danger").text("DeliveryAddress is required.");
+                    isValid = false;
+                }
+
+                // Validate Email
+                var email = $("#email").val().trim();
+                if (email === "") {
+                    $("#email").next(".text-danger").text("Email is required.");
+                    isValid = false;
+                }
+
+                // Validate Password
+                var password = $("#password").val().trim();
+                if (password === "") {
+                    $("#password").next(".text-danger").text("Password is required.");
+                    isValid = false;
+                } else if (password.length < 6) {
+                    $("#password").next(".text-danger").text("Password must be at least 6 characters long.");
+                    isValid = false;
+                }
+
+                var PhoneNumber = $("#PhoneNumber").val().trim();
+                if (PhoneNumber === "") {
+                    $("#PhoneNumber").next(".text-danger").text("PhoneNumber number is required.");
+                    isValid = false;
+                } else if (!/^\d{10}$/.test(PhoneNumber)) {
+                    $("#PhoneNumber").next(".text-danger").text("Invalid PhoneNumber number. Must be 10 digits.");
+                    isValid = false;
+                }
+
+                // Prevent form submission if validation fails
+                if (!isValid) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

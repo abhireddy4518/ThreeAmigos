@@ -1,0 +1,68 @@
+﻿@model ThreeAmigos.Models.ViewModels.AddProductViewModel;
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<h2 class="mb-4 text-center">Product Details</h2>
+
+<div class="container card shadow p-4">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="AddedProductId" />
+
+        <!-- Product Name -->
+        <div class="form-group mt-3">
+            <label asp-for="Name" class="form-label fw-bold">Product Name <span class="text-danger">*</span></label>
+            <input asp-for="Name" class="form-control" readonly />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <!-- Price -->
+        <div class="form-group mt-3">
+            <label asp-for="Price" class="form-label fw-bold">Price <span class="text-danger">*</span></label>
+            <input asp-for="Price" class="form-control" readonly />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <!-- Category -->
+        <div class="form-group mt-3">
+            <label asp-for="Category" class="form-label fw-bold">Category <span class="text-danger">*</span></label>
+            <input asp-for="Category" class="form-control" readonly />
+            <span asp-validation-for="Category" class="text-danger"></span>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group mt-3">
+            <label asp-for="Description" class="form-label fw-bold">Description <spqn class="text-danger">*</spqn></label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <!-- Product Image -->
+        <div class="form-group mt-3">
+            <label asp-for="ImageUrl" class="form-label fw-bold">Product Image <span class="text-danger">*</span> </label>
+            <input asp-for="ImageUrl" class="form-control-file" hidden />
+            <div class="text-center mt-2">
+                <img src="@Model.ImageUrl" class="img-thumbnail shadow" width="300" height="300" alt="@Model.Name">
+            </div>
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+
+
+        <!-- Buttons -->
+        <div class="text-center mt-4">
+            @if (User.IsInRole("staff"))
+            {
+                <a href="@Url.Action("Index")" class="btn btn-secondary px-4 ms-2">Back</a>
+            }
+            else if(User.IsInRole("customer"))
+            {
+                <a href="@Url.Action("Index", "ForSignedInUsersProduct")" class="btn btn-secondary">Back</a>
+            }
+            else
+            {
+                <a href="@Url.Action("Index")" class="btn btn-secondary px-4 ms-2">Back</a>
+            }
+            
+        </div>
+    </form>
+</div>

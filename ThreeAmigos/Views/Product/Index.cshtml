@@ -1,0 +1,97 @@
+﻿
+<div class="row align-items-center mb-3">
+    <!-- Heading -->
+    <h2 class="col-md-3">Product List</h2>
+
+    <!-- Search Bar and Button -->
+    <form method="get" action="@Url.Action("Index", "Product")" class="col-md-9 d-flex justify-content-end">
+        <input type="text" name="searchTerm" class="form-control me-2" placeholder="Search by name, description, or category"
+               value="@ViewBag.SearchTerm" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="@product.ThumbnailImageUrl" class="card-img-top" alt="@product.Name">
+                <div class="card-body">
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text">@product.Description</p>
+                    <p class="card-text"><strong>Category:</strong> @product.Category</p>
+                    <p class="card-text"><strong>Price:</strong> €@product.Price</p>
+                    @if (User.IsInRole("staff"))
+                    {
+                        <a href="@Url.Action("Create", "Product", new { productId = @product.AddedProductId })" class="btn btn-primary">Add Product</a>
+                    }
+                    <a href="@Url.Action("Details", "Product", new { productId = @product.AddedProductId })" class="btn btn-warning">Product Detail</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Pagination -->
+<div class="pagination">
+    @if (ViewBag.TotalCount > ViewBag.PageSize)
+    {
+        var totalPages = (int)Math.Ceiling((double)ViewBag.TotalCount / ViewBag.PageSize);
+        var currentPage = ViewBag.CurrentPage;
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="?searchTerm=@ViewBag.SearchTerm&page=@(currentPage - 1)&size=@ViewBag.PageSize">Previous</a>
+                </li>
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" href="?searchTerm=@ViewBag.SearchTerm&page=@i&size=@ViewBag.PageSize">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <a class="page-link" href="?searchTerm=@ViewBag.SearchTerm&page=@(currentPage + 1)&size=@ViewBag.PageSize">Next</a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            var errorMessage = '@TempData["ErrorMessage"]';
+
+            if (successMessage) {
+                toastr.success(successMessage); // Show success message
+            }
+
+            if (errorMessage) {
+                toastr.error(errorMessage); // Show error message
+            }
+        });
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+    </script>
+}
