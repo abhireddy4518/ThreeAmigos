@@ -1,0 +1,52 @@
+﻿@model List<ThreeAmigos.Models.ViewModels.OrderHistoryViewModel>
+
+
+<div class="text-center mt-4 row">
+    <h2 class="col-md-10"> Order History</h2>
+    
+
+    @if (User.IsInRole("customer"))
+    {
+        <a asp-controller="ForSignedInUsersProduct" asp-action="Index" class="btn btn-warning col-md-2 text-end">
+            Back to Product Details
+        </a>
+    }
+    else
+    {
+        <a asp-controller="Product" asp-action="Index" class="btn btn-warning col-md-2 text-end">
+            Back to Product Details
+        </a>
+    }
+
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">You have no orders yet.</div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Order Date</th>
+            <th>Total Price</th>
+            <th>Status</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                <td>@order.TotalPrice</td>
+                <td>@order.OrderStatus</td>
+                <td>
+                    <a href="@Url.Action("OrderDetails", "Cart", new { orderId = order.OrderId })" class="btn btn-info">View Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

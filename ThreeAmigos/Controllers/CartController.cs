@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mail;
 using System.Security.Claims;
 using ThreeAmigos.Models;
 using ThreeAmigos.Models.Entities;

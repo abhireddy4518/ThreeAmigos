@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Customer>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Customer List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>PhoneNumber</th>
+            <th>Funds</th>
+            <th>UsedFund</th>
+            <th>Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Name</td>
+                <td>@order.Email</td>
+                <td>@order.PasswordHash</td>
+                <td>@order.PhoneNumber</td>
+                <td>@order.FundsAvailable</td>
+                <td>@order.usedFund</td>
+                <td>
+                    <a href="@Url.Action("DeleteCustomerAccount", "Customer", new { customerId = order.UserId})" class="btn btn-warning">View Order History</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            var errorMessage = '@TempData["ErrorMessage"]';
+
+            if (successMessage) {
+                toastr.success(successMessage); // Show success message
+            }
+
+            if (errorMessage) {
+                toastr.error(errorMessage); // Show error message
+            }
+        });
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+    </script>
+}

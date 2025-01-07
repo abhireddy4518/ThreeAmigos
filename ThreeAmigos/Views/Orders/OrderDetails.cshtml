@@ -1,0 +1,65 @@
+﻿@model ThreeAmigos.Models.ViewModels.OrderHistoryViewModel
+
+<style>
+    .img-column {
+        width: 300px;
+    }
+
+    .img-thumbnail {
+        width: 300px;
+        height: 300px;
+    }
+</style>
+
+
+<div class="mt-4 row">
+
+    <h2 class="col-md-8">Order Details</h2>
+    @if (User.IsInRole("staff"))
+    {
+        <a href="@Url.Action("DispatchList")" class="btn btn-secondary col-md-2">Back To Dispatch List</a>
+
+        <a href="@Url.Action("OrderList", "Orders")" class="btn btn-warning col-md-2 ml-2">Back To Order List</a>
+
+    }
+    @if (User.IsInRole("customer"))
+    {
+        <a href="@Url.Action("OrderList", "Orders")" class="btn btn-warning col-md-2">Back To Order List</a>
+    }
+
+</div>
+
+
+<p><strong>Order ID:</strong> @Model.OrderId</p>
+<p><strong>Order Date:</strong> @Model.OrderDate.ToString("yyyy-MM-dd")</p>
+<p><strong>Status:</strong> @Model.OrderStatus</p>
+<p><strong>Total Price:</strong> @Model.TotalPrice</p>
+
+<h4>Order Items</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td class="img-column">
+                    <a asp-controller="Product" asp-action="Details" asp-route-productId="@item.ProductId" class="btn btn-link nav-link text-dark">
+                        <img src="@item.ImageUrl" class="img-thumbnail" alt="@item.ProductName">
+                    </a>
+                </td>
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.UnitPrice</td>
+                <td>@(item.Quantity * item.UnitPrice)</td>
+            </tr>
+        }
+    </tbody>
+</table>
